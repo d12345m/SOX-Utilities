@@ -19,7 +19,7 @@ fi
 DESKTOP=$HOME/Desktop
 cd $DESKTOP  
 
-cp -r $INPUTDIRECTORY "Temp"
+cp -r "$INPUTDIRECTORY" "Temp"
 
 # Strip silence from end of files.
 # Store temp copy of output files.
