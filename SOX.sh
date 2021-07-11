@@ -36,29 +36,30 @@ do
 done;
 
 # Add fade in and fade out to avoid popping.
-cd "$DESKTOP/Temp"
-mkdir "$DESKTOP/Temp2"
-for D in */ ;
-do
-    (cd "$D"
-    mkdir "$DESKTOP/Temp2/$(basename -- "$D")"
-    find . -type f -name "*.wav" | while read filename; do
-        sox "$filename" "$DESKTOP/Temp2/"$(basename -- "$D")"/$(basename -- "$filename")" fade 0.001 0 0.001;
-    done;)
-done;
-
+#
+#cd "$DESKTOP/Temp"
+#mkdir "$DESKTOP/Temp2"
+#for D in */ ;
+#do
+#    (cd "$D"
+#    mkdir "$DESKTOP/Temp2/$(basename -- "$D")"
+#    find . -type f -name "*.wav" | while read filename; do
+#        sox "$filename" "$DESKTOP/Temp2/"$(basename -- "$D")"/$(basename -- "$filename")" fade 0.001 0 0.001;
+#    done;)
+#done;
+#
 #------------------------------------------------------------------------------
 
 # Process stereo files.
 # Normalize.
-cd "$DESKTOP/Temp2"
+cd "$DESKTOP/Temp"
 mkdir "$DESKTOP/StereoTemp"
 for D in */ ;
 do
     (cd "$D"
     mkdir "$DESKTOP/StereoTemp/$(basename -- "$D")"
     find . -type f -name "*.wav" | while read filename; do
-	   sox "$filename" "$DESKTOP/StereoTemp/"$(basename -- "$D")"/$(basename -- "$filename")" norm -0.1;
+	   sox "$filename" "$DESKTOP/StereoTemp/"$(basename -- "$D")"/$(basename -- "$filename")" norm -2.0;
     done;)
 done;
 
@@ -78,14 +79,14 @@ done;
 
 # Process mono files.
 # Convert to mono.
-cd "$DESKTOP/Temp2"
+cd "$DESKTOP/Temp"
 mkdir "$DESKTOP/MonoTemp"
 for D in */ ;
 do
     (cd "$D"
     mkdir "$DESKTOP/MonoTemp/$(basename -- "$D")"
     find . -type f -name "*.wav" | while read filename; do
-        sox -v 0.96 "$filename" "$DESKTOP/MonoTemp/"$(basename -- "$D")"/$(basename -- "$filename")" remix 1-2;
+        sox -v 0.96 "$filename" -c 1 "$DESKTOP/MonoTemp/"$(basename -- "$D")"/$(basename -- "$filename")";
     done;)
 done;
 
@@ -97,7 +98,7 @@ do
     (cd "$D"
     mkdir "$DESKTOP/MonoTemp2/$(basename -- "$D")"
     find . -type f -name "*.wav" | while read filename; do
-	   sox "$filename" "$DESKTOP/MonoTemp2/"$(basename -- "$D")"/$(basename -- "$filename")" norm -0.1;
+	   sox "$filename" "$DESKTOP/MonoTemp2/"$(basename -- "$D")"/$(basename -- "$filename")" norm -2.0;
     done;)
 done;
 
@@ -117,7 +118,7 @@ done;
 
 # Clean up.
 rm -r "$DESKTOP/Temp"
-rm -r "$DESKTOP/Temp2"
+#rm -r "$DESKTOP/Temp2"
 rm -r "$DESKTOP/StereoTemp"
 rm -r "$DESKTOP/MonoTemp"
 rm -r "$DESKTOP/MonoTemp2"
